@@ -1,7 +1,6 @@
 ---
 name: github-repo-bootstrap
 description: Initialize the current folder as a git repo, create a matching GitHub repository via gh, and push. Auto-derives the repo name from the project. Use when the user asks to connect GitHub, create a remote repo, init and push, or bootstrap a GitHub repository for the current project.
-disable-model-invocation: true
 ---
 
 # GitHub Repo Bootstrap
