@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "project_key": "sample-ws",
+  "mode": "project",
+  "scope_key": "all",
+  "scan_complete": true,
+  "scan_evidence": [
+    "示例：检查 ws_handlers.py 的消息路由和事件构建代码，真实项目需重新核实"
+  ],
+  "interfaces": [
+    {
+      "key": "server:ws:message:session.start",
+      "module_key": "realtime",
+      "module_title": "实时会话模块",
+      "title": "客户端 session.start 消息",
+      "protocol": "WebSocket",
+      "source_paths": [
+        "src/ws_handlers.py"
+      ],
+      "content": "#### 基本信息\n\n- 方向：客户端 → 服务端（请求），服务端 → 客户端（回执）\n- 类型：`session.start`（示例，非实际项目 API）。\n- 请求参数：见协议定义和实际处理器。",
+      "examples": {
+        "request": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "客户端 session.start",
+              "format": "json",
+              "body": {
+                "type": "session.start",
+                "audio": {
+                  "encoding": "pcm_s16le",
+                  "sample_rate": 16000,
+                  "channels": 1
+                }
+              },
+              "evidence": [
+                "src/ws_handlers.py:parse_session_start (示例路径，需核实)"
+              ]
+            }
+          ]
+        },
+        "success": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "服务端 session.started",
+              "format": "json",
+              "body": {
+                "type": "session.started",
+                "session_id": "demo-session",
+                "seq": 1,
+                "ts": 1790000000000
+              },
+              "evidence": [
+                "src/ws_handlers.py:build_session_started (示例路径，需核实)"
+              ]
+            }
+          ]
+        },
+        "error": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "请求失败事件",
+              "format": "json",
+              "body": {
+                "type": "error",
+                "code": "invalid_message",
+                "message": "Invalid message"
+              },
+              "evidence": [
+                "src/ws_handlers.py:build_error (示例路径，需核实)"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "server:ws:event:asr.final",
+      "module_key": "realtime",
+      "module_title": "实时会话模块",
+      "title": "服务端 asr.final 事件",
+      "protocol": "WebSocket",
+      "source_paths": [
+        "src/ws_handlers.py"
+      ],
+      "content": "#### 基本信息\n\n- 方向：服务端 → 客户端（主动事件）。\n- 类型：`asr.final`。\n- 触发：识别片段结束后（示例）。",
+      "examples": {
+        "request": {
+          "state": "not_applicable",
+          "reason": "此接口是服务端主动推送事件，没有与该事件一一对应的客户端请求消息；连接和音频交互单独描述",
+          "cases": []
+        },
+        "success": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "服务端 asr.final",
+              "format": "json",
+              "body": {
+                "type": "asr.final",
+                "session_id": "demo-session",
+                "seq": 16,
+                "segment_id": 1,
+                "text": "示例识别文本",
+                "audio_start_ms": 512,
+                "audio_end_ms": 2048
+              },
+              "evidence": [
+                "src/ws_handlers.py:build_asr_final (示例路径，需核实)"
+              ]
+            }
+          ]
+        },
+        "error": {
+          "state": "not_applicable",
+          "reason": "错误通过独立的 error/module.error 事件推送，此事件本身没有失败载荷",
+          "cases": []
+        }
+      }
+    }
+  ],
+  "deleted": []
+}

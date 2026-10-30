@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "project_key": "sample-app",
+  "mode": "interface",
+  "scope_key": "backend:http:post:/api/user/login",
+  "scan_complete": true,
+  "scan_evidence": [
+    "示例：已检查 src/controllers/user.ts 中登录路由的注册及其 Service/Response 映射（真实运行请重新核实）"
+  ],
+  "interfaces": [
+    {
+      "key": "backend:http:post:/api/user/login",
+      "module_key": "user",
+      "module_title": "用户模块",
+      "title": "用户登录",
+      "protocol": "HTTP",
+      "source_paths": [
+        "src/controllers/user.ts",
+        "src/services/auth.ts"
+      ],
+      "content": "#### 基本信息\n\n- HTTP：`POST /api/user/login`\n- 用途：用户登录（仅为补丁格式示例）。\n\n#### 请求参数\n\n| 字段 | 类型 | 必填 | 说明 |\n|---|---|---|---|\n| `account` | `string` | 是 | 账号 |\n| `password` | `string` | 是 | 密码（示例值非真实凭证） |\n\n#### 响应结构\n\n本示例中的字段结构为演示用，真实运行需按 Controller + Serializer + 统一响应包装进行溯源。",
+      "examples": {
+        "request": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "JSON 请求体",
+              "format": "json",
+              "body": {
+                "account": "demo-account",
+                "password": "demo-password"
+              },
+              "evidence": [
+                "src/controllers/user.ts:LoginRequest (示例路径，需核实)"
+              ]
+            }
+          ]
+        },
+        "success": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "HTTP 200 成功",
+              "format": "json",
+              "body": {
+                "code": 0,
+                "data": {
+                  "session_id": "demo-session"
+                }
+              },
+              "evidence": [
+                "src/services/auth.ts:serializeLogin (示例路径，需核实)"
+              ]
+            }
+          ]
+        },
+        "error": {
+          "state": "present",
+          "reason": "",
+          "cases": [
+            {
+              "title": "HTTP 401 认证失败",
+              "format": "json",
+              "body": {
+                "error": {
+                  "code": "unauthorized",
+                  "message": "凭证无效"
+                }
+              },
+              "evidence": [
+                "src/controllers/user.ts:authError (示例路径，需核实)"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "deleted": []
+}
